@@ -445,7 +445,7 @@ core.register_lbm({
 		-- count the drawer visuals
 		local drawerType = core.registered_nodes[node.name].groups.drawer
 		local foundVisuals = 0
-		local objs = core.get_objects_inside_radius(pos, 0.54)
+		local objs = core.get_objects_inside_radius(pos, 0.56)
 		if objs then
 			debug_zombie_visuals("visuals found?", node)
 			for _, obj in pairs(objs) do
