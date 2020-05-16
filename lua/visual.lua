@@ -28,6 +28,17 @@ SOFTWARE.
 local MP = core.get_modpath(core.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+-- debug zombie visuals
+local function debug_zombie_visuals(kontext, obj)
+	local text = "[zombie_visuals] "..kontext..": "..obj.name
+	minetest.debug(text)
+	for i, entity in pairs(minetest.luaentities) do
+		text = "[zombie_visuals] "..kontext..": ".."i="..i..", "..(entity.name or "").." "..(entity.drawerType or "").." "..(entity.visualId or "")
+		minetest.debug(text)
+	end	
+end
+-- end debug zombie visuals
+
 core.register_entity("drawers:visual", {
 	initial_properties = {
 		hp_max = 1,
@@ -436,6 +447,7 @@ core.register_lbm({
 		local foundVisuals = 0
 		local objs = core.get_objects_inside_radius(pos, 0.54)
 		if objs then
+			debug_zombie_visuals("visuals found?", node)
 			for _, obj in pairs(objs) do
 				if obj and obj:get_luaentity() and
 						obj:get_luaentity().name == "drawers:visual" then
@@ -448,8 +460,10 @@ core.register_lbm({
 			return
 		end
 
+		debug_zombie_visuals("restore_visual not found before", node)
 		-- not enough visuals found, remove existing and create new ones
 		drawers.remove_visuals(pos)
 		drawers.spawn_visuals(pos)
+		debug_zombie_visuals("restore_visual not found after", node)
 	end
 })
